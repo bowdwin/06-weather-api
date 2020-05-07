@@ -38,6 +38,8 @@ function apiCall() {
   var pulledLatitiude = "";
   var pulledLongitude = "";
   var currentInfoidEL = $("#currentInfo");
+  var currentTime = (new Date().getTime() + " current time");
+
 
   console.log(apiURL);
   $.ajax({
@@ -73,24 +75,19 @@ function apiCall() {
       cityArray.push("Wind Speed: " + pulledWind + " mph");
 
       pulledLatitiude = response.coord.lat;
-      console.log(pulledLatitiude);
-      // cityArray.push(pulledLatitiude);
 
       pulledLongitude = response.coord.lon;
-      console.log(pulledLongitude);
-      // cityArray.push(pulledLongitude);
 
-
-      pulledUVIndex = "65";
-      console.log("Wind Speed: " + pulledUVIndex + " mph");
-      cityArray.push("UV Index: " + pulledUVIndex + " uv");
+      pulledUVIndex = uvIndex(pulledLatitiude, pulledLongitude, apiKey, cityArray, currentInfoidEL, addPara);
+      console.log(pulledUVIndex + " pulled uv index");
+      // cityArray.push("UV Index: " + pulledUVIndex + " uv");
+      // console.log(cityArray + " citty array")
 
 
       console.log(cityArray);
-      for (var i = 0; i < cityArray.length; i++) {
-        console.log($(currentInfoidEL).append(addPara).append(cityArray[i]).append('<br>'));
 
-      }
+
+
 
 
       // #currentInfo
@@ -101,6 +98,38 @@ function apiCall() {
 
 }
 
+
+function uvIndex(lat, lon, APIkey, cityArray, currentInfoidEL, addPara) {
+  console.log(APIkey + " api key")
+  console.log(lat + " lat")
+  console.log(lon + " lon")
+
+  console.log(cityArray + " city array in uvindex");
+
+
+  var apiUrl = `https://api.openweathermap.org/data/2.5/uvi?appid=${APIkey}&lat=${lat}&lon=${lon}`;
+  console.log(apiUrl + " api url uv");
+
+
+  $.ajax({
+    url: apiUrl,
+    method: "GET",
+  })
+    // We store all of the retrieved data inside of an object called "response"
+    .then(function (response) {
+      // Log the queryURL
+      console.log(response);
+      uvValue = response.value;
+      cityArray.push("UV Index: " + uvValue + " uv");
+      for (var i = 0; i < cityArray.length; i++) {
+        $(currentInfoidEL).append(addPara).append(cityArray[i]).append('<br>');
+
+      }
+      console.log(uvValue + " value to be returned");
+
+    });
+
+}
 
 function currentWeather() {
 
