@@ -38,6 +38,8 @@ function apiCall() {
   var pulledLatitiude = "";
   var pulledLongitude = "";
   var currentInfoidEL = $("#currentInfo");
+  var fiveDayForcastEL = $("#fiveDayForcast");
+  fiveDayForcast
   var currentTime = (new Date().getTime() + " current time");
   var currentDate = moment().format('MMMM Do YYYY');
   console.log(currentDate + " moment current date");
@@ -105,12 +107,13 @@ function apiCall() {
       cityArray.push("Humidity: " + pulledHumidity + "%");
 
       pulledUVIndex = uvIndex(pulledLatitiude, pulledLongitude, apiKey, cityArray, currentInfoidEL, addPara);
-      console.log(pulledUVIndex + " pulled uv index");
+      fiveDayForcast(apiKey, city, state, country, fiveDayForcastEL, addPara);
+      // console.log(pulledUVIndex + " pulled uv index");
       // cityArray.push("UV Index: " + pulledUVIndex + " uv");
       // console.log(cityArray + " citty array")
 
 
-      console.log(cityArray);
+      // console.log(cityArray);
 
 
 
@@ -133,7 +136,7 @@ function uvIndex(lat, lon, APIkey, cityArray, currentInfoidEL, addPara) {
   console.log(cityArray + " city array in uvindex");
 
 
-  var apiUrl = `https://api.openweathermap.org/data/2.5/uvi?appid=${APIkey}&lat=${lat}&lon=${lon}`;
+  var apiUrl = `https://api.openweathermap.org/data/2.5/uvi?appid=${APIkey}&lat=${lat}&lon=${lon}&units=imperial`;
   console.log(apiUrl + " api url uv");
 
 
@@ -144,25 +147,102 @@ function uvIndex(lat, lon, APIkey, cityArray, currentInfoidEL, addPara) {
     // We store all of the retrieved data inside of an object called "response"
     .then(function (response) {
       // Log the queryURL
-      console.log(response);
+
       uvValue = response.value;
       cityArray.push("UV Index: " + uvValue + " uv");
       for (var i = 0; i < cityArray.length; i++) {
         $(currentInfoidEL).append(addPara).append(cityArray[i]).append('<br>');
 
       }
-      console.log(uvValue + " value to be returned");
+
 
     });
 
 }
 
-function currentWeather() {
+function currentWeather(apiKey, city, state, country) {
+
 
 }
 
-function fiveDayForcast() {
+function fiveDayForcast(apiKey, city, state, country, fiveDayForcastEL, addPara) {
 
+
+  var prevLoop;
+
+
+  var fiveDayURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city},${state},${country}&appid=${apiKey}&units=imperial`;
+  console.log(fiveDayURL + " api url in five day forcast URL")
+  $.ajax({
+    url: fiveDayURL,
+    method: "GET",
+  })
+    // We store all of the retrieved data inside of an object called "response"
+    .then(function (response) {
+      // Log the queryURL
+      console.log(response);
+      prevLoop = response.list[0].dt_txt;
+      console.log(prevLoop);
+      prevLoop = prevLoop.substring(5, 10);
+      console.log(prevLoop);
+      console.log(response.list.length)
+      for (i = 0; i < response.list.length; i++) {
+        arrayToPushTo = [];
+        var pulledDate;
+        var date;
+        var weatherIcon;
+        var temp;
+        var humidity;
+        var iconURL;
+        var iconURLAppend;
+
+        console.log(i);
+        var currentDay;
+        currentDay = response.list[i].dt_txt
+        // console.log(currentDay);
+        currentDay = currentDay.substring(5, 10)
+        console.log(currentDay);
+        console.log(prevLoop);
+
+
+        // console.log(response.list[i].dt_txt)
+        if (prevLoop === currentDay) {
+          // create card and write to it
+          console.log("hit the if");
+          arrayToPushTo.push(currentDay);
+          temp = response.list[i].main.temp;
+          arrayToPushTo.push(temp);
+          console.log(temp);
+          humidity = response.list[i].main.humidity;
+          console.log(humidity);
+          arrayToPushTo.push(humidity);
+          iconURL = response.list[i].weather[0].icon;
+          console.log(iconURL + " icon url")
+          var iconURL = "https://openweathermap.org/img/w/" + iconURL + ".png";
+          var iconURLAppend = $('<img src=' + iconURL + ' height="80px" width="80px">');
+          arrayToPushTo.push(iconURLAppend);
+          // fiveDayForcastEL
+          // $(currentInfoidEL).append(addPara).append(cityArray[i]).append('<br>');
+
+        }
+        else {
+          // store current day in prev day
+          prevLoop = currentDay;
+          console.log(" hit the else");
+        }
+
+        for (var k = 0; k < arrayToPushTo.length; k++) {
+          console.log(" hit forloop")
+
+          $(fiveDayForcastEL).append(addPara).append(arrayToPushTo[k]).append('<br>');
+
+        }
+
+        // text += cars[i] + "<br>";
+      }
+
+    });
+  // console.log(response + " response of curretnweatherFunc");
 }
 
 function pullLocalStorage() {
