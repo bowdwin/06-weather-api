@@ -39,6 +39,11 @@ function apiCall() {
   var pulledLongitude = "";
   var currentInfoidEL = $("#currentInfo");
   var currentTime = (new Date().getTime() + " current time");
+  var currentDate = moment().format('MMMM Do YYYY');
+  console.log(currentDate + " moment current date");
+  var pulledWeather = "";
+  var pulledWeatherIcon = "";
+
 
 
   console.log(apiURL);
@@ -53,14 +58,31 @@ function apiCall() {
       console.log(response);
       // Log the resulting object
       pulledCityName = response.name;
-      cityArray.push(pulledCityName);
+      cityArray.push(pulledCityName + "  " + currentDate);
       // $(currentInfoidEL).append(addPara).append(pulledCityName);
       console.log(pulledCityName);
+
+      pulledWeather = response.weather[0].main;
+
+      console.log(pulledWeather + " pulled weather");
+      cityArray.push(pulledWeather);
+
+
+      pulledWeatherIcon = (response.weather[0].icon)
+      var iconURL = "https://openweathermap.org/img/w/" + pulledWeatherIcon + ".png";
+      var iconURLAppend = $('<img src=' + iconURL + ' height="80px" width="80px">');
+      console.log(iconURLAppend + " iconurl append")
+      console.log(iconURL + " this is icon URL");
+      cityArray.push(iconURLAppend);
 
       pulledTemp = response.main.temp;
       console.log(pulledTemp);
       cityArray.push("Temperature: " + pulledTemp + " F");
 
+      // currentDate = response.dt;
+      // currentDate = new Date(currentDate).toLocaleDateString("en-US")
+
+      // console.log(currentDate + " this is current date");
 
       pulledRealFeel = response.main.feels_like;
       console.log(pulledRealFeel);
@@ -77,6 +99,10 @@ function apiCall() {
       pulledLatitiude = response.coord.lat;
 
       pulledLongitude = response.coord.lon;
+
+      pulledHumidity = response.main.humidity;
+      console.log(pulledHumidity);
+      cityArray.push("Humidity: " + pulledHumidity + "%");
 
       pulledUVIndex = uvIndex(pulledLatitiude, pulledLongitude, apiKey, cityArray, currentInfoidEL, addPara);
       console.log(pulledUVIndex + " pulled uv index");
