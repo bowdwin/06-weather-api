@@ -1,0 +1,29 @@
+.card-padding {
+    margin: 5px;
+    max-width: 10rem;
+    max-height: 15rem;
+}
+
+.card-body {
+    background-color: black;
+}
+
+.main-card-style {
+    max-width: 15rem;
+    max-height: 25rem;
+}
+.uv-index-low {
+    background-color: lightgreen;
+}
+.uv-index-moderate {
+    background-color: yellow;
+}
+.uv-index-high {
+    background-color: orange;
+}
+.uv-index-very-high {
+    background-color: red;
+}
+.uv-index-extreme {
+    background-color: rgb(139, 8, 122);
+}
