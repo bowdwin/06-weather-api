@@ -119,7 +119,7 @@ function uvIndex(lat, lon, APIkey, cityArray, currentInfoidEL, addPara) {
       // Log the queryURL
 
       uvValue = response.value;
-      cityArray.push("UV Index: " + uvValue);
+      cityArray.push(uvValue);
       dayCard = `<div class="card text-white bg-dark mb-3 rounded main-card-style">
       <div class="card-body body day-card-body">
         
@@ -145,26 +145,29 @@ function uvIndex(lat, lon, APIkey, cityArray, currentInfoidEL, addPara) {
           console.log(cityArray[i]);
           console.log("city array i");
           $(dayCardBody).append(uvIndexbody);
-          Float.valueOf(uvValue);
-          console.log(typeof uvValue);
+
+          console.log
+          // uvValue = parseFloat(uvValue);
+          // console.log(typeof uvValue);
 
           if (uvValue <= 2.99) {
             $('.uv-index').addClass('uv-index-low');
           }
-          if (uvValue <= 5.99) {
+          else if (uvValue <= 5.99) {
             console.log("hit 5.99")
             $('.uv-index').addClass('uv-index-moderate');
           }
-          if (uvValue <= 7.99) {
+          else if (uvValue <= 7.99) {
             $('.uv-index').addClass('uv-index-high');
           }
-          if (uvValue <= 10.99) {
+          else if (uvValue <= 10.99) {
             $('.uv-index').addClass('uv-index-very-high');
           }
           else {
             $('.uv-index').addClass('uv-index-extreme');
           };
-
+          $('.uvIndex').prepend("content");
+          $('.uvIndex')prepend(content);
         }
         else {
           console.log(cityArray);
