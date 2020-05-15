@@ -167,7 +167,7 @@ function uvIndex(lat, lon, APIkey, cityArray, currentInfoidEL, addPara) {
             $('.uv-index').addClass('uv-index-extreme');
           };
           $('.uvIndex').prepend("content");
-          $('.uvIndex')prepend(content);
+          // $('.uvIndex')prepend(content);
         }
         else {
           console.log(cityArray);
