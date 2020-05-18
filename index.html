@@ -4,45 +4,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+  <title>Weather</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css">
 </head>
-<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+<nav class="navbar navbar-expand-lg" style="background-color: rgb(65, 91, 206);">
   <div class="container">
-    <a class="navbar-brand" style="text-align: center;" href="#">Navbar</a>
+    <a class="navbar-brand" style="color: white;" href="#">Weather Dashboard</a>
   </div>
 </nav>
 
 <body>
-  <div class="container-fluid">
-    <div class="form-row">
-      <div class="col-4">
-        <input id="city" type="text" class="form-control" placeholder="City">
-        <input id="state" type="text" class="form-control" placeholder="State">
-        <div>
-          <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+  <div class="bg">
+    <div class="container-fluid justify-content-center">
+      <div class="form-row d-flex justify-content-center">
+        <div class="col-lg-6 col-sm-3 col-md-6" style="margin-top: 10px;">
+          <input id="city" type="text" class="form-control" placeholder="City">
+          <input id="state" type="text" class="form-control" placeholder="State">
+          <div>
+            <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+          </div>
+          <div>
+            <div class="city-buttons"></div>
+          </div>
         </div>
-        <div class="city-buttons"></div>
+        <div class="col-lg-6 col-sm-3 col-md-6" id="currentInfo">
+        </div>
       </div>
-      <div class="col-8" id="currentInfo">
+      <div class="row justify-content-center">
+        <!-- <div class="col-4"> -->
       </div>
-    </div>
-    <div class="row">
-      <div class="col-4">
-      </div>
-      <div class="col-8" id="fiveDayForcast">
+      <div class="col-lg-12 col-sm-3 col-md-12" id=" fiveDayForcast">
         <div class="card-group">
         </div>
       </div>
     </div>
   </div>
-
   <div>
-
   </div>
-
 
   <script src=" https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js">
   </script>
@@ -55,6 +55,7 @@
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
   <script src="script.js"></script>
+  </div>
 </body>
 
 </html>

@@ -8,20 +8,28 @@ $(document).ready(function () {
     var previousSearches = JSON.parse((localStorage.getItem("Cities")));
     console.log(previousSearches);
     console.log("after history button");
-    for (i = 0; i < previousSearches.length; i++) {
-      var buttonNumb = (previousSearches[i]);
-      console.log(buttonNumb + " button numb");
-      var button = `<div> <button class='history' id='${previousSearches[i]}'>${previousSearches[i]}</button ></div >`;
-      $(".city-buttons").append(button);
-    }
+    if (previousSearches)
+      for (i = 0; i < previousSearches.length; i++) {
+        var buttonNumb = (previousSearches[i]);
+
+
+        console.log(buttonNumb + " button numb");
+        var button = `<div> <button class='history btn-sm btn-block btn-dark' id='${buttonNumb}'>${buttonNumb}</button ></div >`;
+        $(".city-buttons").append(button);
+      }
   }
 
   $('#submit').on('click', function (event) {
     event.preventDefault();
     var city = $('#city').val();
+    var state = $('#state').val();
+    console.log(state + " this is the state");
     console.log(city + " this is the city line 36")
-    saveLocal(city);
-    apiCall(city)
+    city = (city + '&nbsp' + state);
+    console.log(" city to pass to array")
+
+    saveLocal(city, state);
+    apiCall(city, state)
     $('#fiveDayForcast').show();
   });
   var cardGroupEL = $(".card-group");
@@ -30,11 +38,13 @@ $(document).ready(function () {
   $(cityButtons).on("click", historyBtnClick);
   function historyBtnClick(event) {
     var city = (event.target.innerHTML);
+    var state = city.substr(city.length - 2);
+    console.log(state);
     console.log(city);
     apiCall(city);
   }
 
-  function apiCall(city) {
+  function apiCall(city, state) {
     var apiKey = "fc7d6009fecedb9c2112c94508ea6850";
     var state = $('#state').val();
     var country = "US"
@@ -124,7 +134,7 @@ $(document).ready(function () {
           if (i === 7) {
 
             uvIndexbody = `<div class="uv-index"
-          <p>UV Iindex: ${cityArray[i]}</p>
+          <p>UV Iindex:${cityArray[i]}</p>
           </div>`;
             $(dayCardBody).append(uvIndexbody);
             if (uvValue <= 2.99) {
@@ -206,7 +216,7 @@ $(document).ready(function () {
       }
       );
   }
-  function saveLocal(city) {
+  function saveLocal(city, state) {
     var cities = JSON.parse((localStorage.getItem("Cities"))) || [];
     cities.unshift(city);
     if (cities.length > 8) {

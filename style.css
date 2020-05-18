@@ -5,7 +5,7 @@
 }
 
 .card-body {
-    background-color: black;
+    background-color: rgb(65, 91, 206);
 }
 
 .main-card-style {
@@ -29,4 +29,23 @@
 }
 .history{
     margin: 2px;
+    
+}
+
+.bg {
+    background-image: url("./assets/sunny.jpg");
+    background-size: cover !important;
+    min-height: 100vh;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+  }
+
+.navbar-style {
+    background-color: rgb(65, 91, 206);
+}
+
+#city{
+    padding: 5px;
 }
