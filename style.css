@@ -42,10 +42,14 @@
     color: white;
   }
 
-.navbar-style {
-    background-color: rgb(65, 91, 206);
-}
-
 #city{
     padding: 5px;
+}
+.day-card {
+    padding-top: 10px;
+}
+.navbar-style {
+    display: flex;
+    justify-content: space-around;
+    background-color: rgb(65, 91, 206);
 }
