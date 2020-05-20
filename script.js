@@ -1,7 +1,10 @@
 $(document).ready(function () {
+  //apply history busttons on page
   getHistoryButton();
+  //get local storage
   var previousSearches = JSON.parse((localStorage.getItem("Cities")));
   var city = previousSearches[previousSearches.length - 1];
+  //pass in first item in local storage
   apiCall(city, state)
 });
 
@@ -9,25 +12,15 @@ function getHistoryButton() {
   $(".city-buttons").empty();
 
   var previousSearches = JSON.parse((localStorage.getItem("Cities")));
-  console.log(previousSearches);
-  console.log("after history button");
   if (previousSearches)
+    //create each history button
     for (i = 0; i < previousSearches.length; i++) {
       var buttonNumb = (previousSearches[i]);
-
-
-      console.log(buttonNumb + " button numb");
       var button = `<div> <button class='history btn-sm btn-block btn-dark ${i}' id='${buttonNumb}'>${buttonNumb}</button ></div >`;
       $(".city-buttons").append(button);
-      if (i === 0) {
-        // $(i).trigger("click");
-        // console.log("this was was i auto click")
-        // console.log(i);
-        // apiCall(buttonNumb);
-      }
     }
 }
-
+//submit city and state
 $('#submit').on('click', function (event) {
   event.preventDefault();
   var city = $('#city').val();
@@ -36,7 +29,6 @@ $('#submit').on('click', function (event) {
   console.log(city + " this is the city line 36")
   city = (city + '&nbsp' + state);
   console.log(" city to pass to array")
-
   saveLocal(city, state);
   apiCall(city, state)
   $('#fiveDayForcast').show();
@@ -44,6 +36,7 @@ $('#submit').on('click', function (event) {
 var cardGroupEL = $(".card-group");
 var cityButtons = $(".city-buttons");
 
+//event listener to listn to which history button was clicked
 $(cityButtons).on("click", historyBtnClick);
 function historyBtnClick(event) {
   var city = (event.target.innerHTML);
@@ -53,6 +46,7 @@ function historyBtnClick(event) {
   apiCall(city);
 }
 
+//function to do the 5 day api call and uv index
 function apiCall(city, state) {
   var apiKey = "fc7d6009fecedb9c2112c94508ea6850";
   var state = $('#state').val();
@@ -109,7 +103,7 @@ function apiCall(city, state) {
       pulledLatitiude = response.coord.lat;
       pulledLongitude = response.coord.lon;
 
-
+      //vall uv index function and fivedayforcase
       pulledUVIndex = uvIndex(pulledLatitiude, pulledLongitude, apiKey, cityArray, currentInfoidEL, addPara);
       fiveDayForcast(apiKey, city, state, country, fiveDayForcastEL, addPara);
     });
@@ -117,8 +111,8 @@ function apiCall(city, state) {
 
 }
 
-
-function uvIndex(lat, lon, APIkey, cityArray, currentInfoidEL, addPara) {
+//function for uv index
+function uvIndex(lat, lon, APIkey, cityArray, currentInfoidEL) {
   var apiUrl = `https://api.openweathermap.org/data/2.5/uvi?appid=${APIkey}&lat=${lat}&lon=${lon}&units=imperial`;
   $.ajax({
     url: apiUrl,
@@ -126,8 +120,6 @@ function uvIndex(lat, lon, APIkey, cityArray, currentInfoidEL, addPara) {
   })
     // We store all of the retrieved data inside of an object called "response"
     .then(function (response) {
-      // Log the queryURL
-
       uvValue = response.value;
       cityArray.push(uvValue);
       dayCard = `<div class="card text-white bg-dark mb-3 rounded main-card-style">
@@ -140,8 +132,8 @@ function uvIndex(lat, lon, APIkey, cityArray, currentInfoidEL, addPara) {
 
       for (var i = 0; i < cityArray.length; i++) {
         uvValue = cityArray[i];
+        //set color of uv index, which is the 7th element of the array
         if (i === 7) {
-
           uvIndexbody = `<div class="uv-index"
           <p>UV Iindex:${cityArray[i]}</p>
           </div>`;
@@ -170,6 +162,8 @@ function uvIndex(lat, lon, APIkey, cityArray, currentInfoidEL, addPara) {
       getHistoryButton();
     });
 }
+
+//function for 5 day api call
 function fiveDayForcast(apiKey, city, state, country, fiveDayForcastEL, addPara) {
   cardGroupEL = $(".card-group");
   $(cardGroupEL).empty();
@@ -186,6 +180,7 @@ function fiveDayForcast(apiKey, city, state, country, fiveDayForcastEL, addPara)
       prevLoop = prevLoop.substring(5, 10);
       cardHeader = $('.card-header');
       arrayToPushTo = [];
+      //grabs every every 8th item for new day, and creates card
       for (i = 3; i < response.list.length; i += 8) {
         card = `<div class="card text-white bg-dark mb-3 card-padding rounded">
         <div class="card-header header${i}"></div>
@@ -200,18 +195,13 @@ function fiveDayForcast(apiKey, city, state, country, fiveDayForcastEL, addPara)
         var humidity;
         var iconURL;
         var iconURLAppend;
-        // console.log(i);
         var currentDay;
         currentDay = response.list[i].dt_txt
-        // console.log(currentDay);
         currentDay = currentDay.substring(5, 10)
-
         $(cardHeader).append(currentDay);
-
-        // console.log("hit the if");
         arrayToPushTo.push(currentDay);
+        //grabs icon image of weather
         iconURL = response.list[i].weather[0].icon;
-        // console.log(iconURL + " icon url")
         var iconURL = "https://openweathermap.org/img/w/" + iconURL + ".png";
         var iconURLAppend = $('<img src=' + iconURL + ' height="60px" width="60px">');
         $(cardBody).append(iconURLAppend);
